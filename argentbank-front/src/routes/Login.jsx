@@ -31,6 +31,7 @@ export default function Login() {
                         </div>
                     )}
                     <p>{response.message}</p>
+                    <p>{response.body.token}</p>
                 </div>
             )}
         </div>
