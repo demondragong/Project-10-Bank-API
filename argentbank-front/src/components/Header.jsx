@@ -1,6 +1,7 @@
 import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { argentBankApi, usePostUserProfileQuery } from "../slices/api";
 import { logout } from "../slices/auth";
 import logo from "../static/img/argentBankLogo.png";
 
@@ -8,8 +9,11 @@ export default function Header() {
   const { user: currentUser } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
+  const { data, error, isLoading } = usePostUserProfileQuery();
+
   const logOut = useCallback(() => {
     dispatch(logout());
+    dispatch(argentBankApi.util.resetApiState());
   }, [dispatch]);
 
   return (
@@ -27,16 +31,18 @@ export default function Header() {
         {currentUser ? (
           <div className="navbar-nav ml-auto">
             <Link to={"/profile"} className="main-nav-item nav-link">
-              Profile{currentUser.username}
+              <i className="fa fa-user-circle header-icon"></i>
+              {data ? data.body.firstName : "Profile"}
             </Link>
-            <a href="/" className="main-nav-item nav-link" onClick={logOut}>
+            <Link to="/" className="main-nav-item nav-link" onClick={logOut}>
+              <i className="fa fa-sign-out header-icon"></i>
               Sign out
-            </a>
+            </Link>
           </div>
         ) : (
           <div>
             <Link className="main-nav-item" to="/login">
-              <i className="fa fa-user-circle"></i>
+              <i className="fa fa-user-circle header-icon"></i>
               Sign In
             </Link>
           </div>

@@ -1,11 +1,20 @@
+import { useState } from "react";
 import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
+import NameEditForm from "../components/NameEditForm";
+import { usePostUserProfileQuery } from "../slices/api";
 
 export default function Profile() {
-  const {user: currentUser} = useSelector((state) => state.auth)
+  const { user: currentUser } = useSelector((state) => state.auth);
+  const { data, error, isLoading } = usePostUserProfileQuery()
+  const [showEditForm, setShowEditForm ] = useState(false)
 
-  if(!currentUser) {
-    return <Navigate to="/login" />
+  const toggleEditForm = () => {
+    setShowEditForm(!showEditForm)
+  }
+
+  if (!currentUser) {
+    return <Navigate to="/login" />;
   }
 
   return (
@@ -14,9 +23,10 @@ export default function Profile() {
         <h1>
           Welcome back
           <br />
-          Tony Jarvis!
+          {data ? data.body.firstName + " " + data.body.lastName : ""}
         </h1>
-        <button className="edit-button">Edit Name</button>
+        { showEditForm && <NameEditForm />}
+        <button className="edit-button" onClick={toggleEditForm}>Edit Name</button>
       </div>
       <h2 className="sr-only">Accounts</h2>
       <section className="account">

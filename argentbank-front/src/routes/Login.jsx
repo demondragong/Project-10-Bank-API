@@ -1,4 +1,3 @@
-import { useAPI } from "../utils/useAPI";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useEffect, useState } from "react";
@@ -8,18 +7,6 @@ import { clearMessage } from "../slices/message";
 import { login } from "../slices/auth";
 
 export default function Login(props) {
-  //   const { response, loading, error } = useAPI({
-  //     method: "POST",
-  //     url: "/user/login",
-  //     headers: {
-  //       // no need to stringify
-  //       accept: "*/*",
-  //     },
-  //     data: {
-  //       email: "tony@stark.com",
-  //       password: "password123",
-  //     },
-  //   });
 
   const [loading, setLoading] = useState(false);
 

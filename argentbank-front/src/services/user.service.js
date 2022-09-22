@@ -1,20 +1,25 @@
 import axios from "axios";
 import apiBaseUrl from "../utils/constants";
-import authHeader from "./auth-header";
 
 const API_URL = apiBaseUrl;
+const user = JSON.parse(localStorage.getItem("user"));
+if (user && user.token) {
+  axios.defaults.headers.common["Authorization"] = `Bearer ${user.token}`;
+}
 
 const getPublicContent = () => {
   return axios.get(API_URL + "all");
 };
 
-const getUserProfile = () => {
-  return axios.get(API_URL + "/user/profile", { headers: authHeader() });
+const getUserProfile = async () => {
+  const response = await axios.post(API_URL + "/user/profile");
+  console.log(response.data);
+  return response.data;
 };
 
 const userService = {
   getPublicContent,
-  getUserProfile
+  getUserProfile,
 };
 
-export default userService
+export default userService;

@@ -264,6 +264,11 @@ body {
   margin-bottom: 2rem;
 }
 
+.header-icon {
+  margin-left: 1rem;
+  margin-right: .5rem;
+}
+
 .transaction-button {
   display: block;
   width: 100%;
