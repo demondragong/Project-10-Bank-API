@@ -1,12 +1,32 @@
 import { Formik, Field, Form, ErrorMessage } from "formik";
+import { useDispatch, useSelector } from "react-redux";
+import { useEditUserNamesMutation, usePostUserProfileQuery } from "../slices/api";
+import { hide } from "../slices/nameEditor";
 
 export default function NameEditForm() {
+  
+  const dispatch = useDispatch();
+
+  const { data, error } = usePostUserProfileQuery()
+
+  const [editUserNames, { isLoading }] = useEditUserNamesMutation()
+
+  const handleSaveNames = async (values) => {
+    if (!isLoading) {
+      try {
+        await editUserNames({firstName: values.firstname, lastName: values.lastname}).unwrap()
+        dispatch(hide())
+      } catch (err) {
+        console.error('Failed to save the name:', err)
+      }
+    }
+  }
+
   return (
-    <section className="sign-in-content">
       <Formik
-        // initialValues={initialValues}
+        initialValues={{firstname: data.body.firstName, lastname: data.body.lastName}}
         // validationSchema={validationSchema}
-        // onSubmit={handleLogin}
+        onSubmit={handleSaveNames}
       >
         <Form>
           <div className="form-fields">
@@ -17,20 +37,19 @@ export default function NameEditForm() {
             </div>
             <div className="input-wrapper">
               <label htmlFor="lastname"></label>
-              <Field name="lastname" type="text" id="lastname" />
+              <Field name="lastname" type="text" id="lastname"/>
               <ErrorMessage name="lastname" component="div" />
             </div>
           </div>
           <div className="form-buttons">
-            <button type="submit" className="sign-in-button">
+            <button type="submit" className="name-edit-button">
               Save
             </button>
-            <button type="submit" className="sign-in-button">
+            <button type="button" className="name-edit-button" onClick={() => dispatch(hide())}>
               Cancel
             </button>
           </div>
         </Form>
       </Formik>
-    </section>
   );
 }

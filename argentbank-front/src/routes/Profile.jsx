@@ -1,17 +1,16 @@
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 import NameEditForm from "../components/NameEditForm";
 import { usePostUserProfileQuery } from "../slices/api";
+import { show, toggle } from "../slices/nameEditor";
 
 export default function Profile() {
   const { user: currentUser } = useSelector((state) => state.auth);
-  const { data, error, isLoading } = usePostUserProfileQuery()
-  const [showEditForm, setShowEditForm ] = useState(false)
+  const { data, error, isLoading } = usePostUserProfileQuery();
 
-  const toggleEditForm = () => {
-    setShowEditForm(!showEditForm)
-  }
+  const nameEditorIsVisible = useSelector((state) => state.nameEditor.visible);
+  const dispatch = useDispatch();
 
   if (!currentUser) {
     return <Navigate to="/login" />;
@@ -20,13 +19,23 @@ export default function Profile() {
   return (
     <main className="main bg-dark">
       <div className="header">
-        <h1>
-          Welcome back
-          <br />
-          {data ? data.body.firstName + " " + data.body.lastName : ""}
-        </h1>
-        { showEditForm && <NameEditForm />}
-        <button className="edit-button" onClick={toggleEditForm}>Edit Name</button>
+        {nameEditorIsVisible ? (
+          <>
+            <h1>Welcome back</h1>
+            <NameEditForm />
+          </>
+        ) : (
+          <>
+            <h1>
+              Welcome back
+              <br />
+              {data ? data.body.firstName + " " + data.body.lastName : ""}
+            </h1>
+            <button className="edit-button" onClick={() => dispatch(toggle())}>
+              Edit Name
+            </button>
+          </>
+        )}
       </div>
       <h2 className="sr-only">Accounts</h2>
       <section className="account">
