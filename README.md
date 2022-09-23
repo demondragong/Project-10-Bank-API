@@ -1,6 +1,6 @@
-# Project #10 - Argent Bank API
+# Argent Bank
 
-This codebase contains the code needed to run the backend for Argent Bank.
+Training project to experiment with Redux, Redux Toolkit (RTK), RTK Query and JSON Web Token (JWT).
 
 ## Getting Started
 
@@ -21,7 +21,7 @@ node --version
 mongo --version
 ```
 
-### Instructions
+### Instructions to run the backend
 
 1. Fork this repo
 1. Clone the repo onto your computer
@@ -58,6 +58,25 @@ Once you run the `populate-db` script, you should have two users in your databas
 - Last Name: `Rogers`,
 - Email: `steve@rogers.com`,
 - Password: `password456`
+
+
+### Instructions to run the frontend
+
+1. Open a terminal window in the cloned project
+1. Navigate to the frontend folder (cd argentbank-front)
+1. Run the following commands
+
+```bash
+# Install dependencies
+npm install
+
+# Start react app
+npm start
+
+```
+
+Your should be able to view the ArgentBank app in your browser at http://localhost:3000.
+
 
 ## API Documentation
 
