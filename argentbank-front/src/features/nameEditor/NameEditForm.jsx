@@ -1,7 +1,7 @@
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import { useDispatch, useSelector } from "react-redux";
-import { useEditUserNamesMutation, usePostUserProfileQuery } from "../slices/api";
-import { hide } from "../slices/nameEditor";
+import { useEditUserNamesMutation, usePostUserProfileQuery } from "../../slices/api";
+import { hide } from "./nameEditor";
 
 export default function NameEditForm() {
   

@@ -1,15 +1,23 @@
+import { useEffect } from "react";
 import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { argentBankApi, usePostUserProfileQuery } from "../slices/api";
-import { logout } from "../slices/auth";
-import logo from "../static/img/argentBankLogo.png";
+import { argentBankApi, usePostUserProfileQuery } from "../../slices/api";
+import { logout } from "../../slices/auth";
+import logo from "../../static/img/argentBankLogo.png";
 
 export default function Header() {
   const { user: currentUser } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
-  const { data, error, isLoading } = usePostUserProfileQuery();
+  const loggedIn = currentUser ? true : false
+
+  useEffect(() => {
+    console.log(currentUser)
+    console.log(loggedIn)
+  })
+
+  const { data, error, isLoading } = usePostUserProfileQuery(undefined, {skip: loggedIn!== true});
 
   const logOut = useCallback(() => {
     dispatch(logout());

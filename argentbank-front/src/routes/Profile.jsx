@@ -1,12 +1,12 @@
-import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
-import NameEditForm from "../components/NameEditForm";
+import NameEditForm from "../features/nameEditor/NameEditForm";
 import { usePostUserProfileQuery } from "../slices/api";
-import { show, toggle } from "../slices/nameEditor";
+import { show, toggle } from "../features/nameEditor/nameEditor";
 
 export default function Profile() {
   const { user: currentUser } = useSelector((state) => state.auth);
+  
   const { data, error, isLoading } = usePostUserProfileQuery();
 
   const nameEditorIsVisible = useSelector((state) => state.nameEditor.visible);
