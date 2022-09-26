@@ -20,7 +20,7 @@ export default function Login(props) {
   }, [dispatch]);
 
   const initialValues = {
-    username: "",
+    username: localStorage.getItem("username") ,
     password: "",
   };
 
@@ -30,12 +30,13 @@ export default function Login(props) {
   });
 
   const handleLogin = (formValue) => {
-    const { username, password } = formValue;
+    const { username, password, rememberMe } = formValue;
     setLoading(true);
 
-    dispatch(login({ username, password }))
+    dispatch(login({ username, password, rememberMe }))
       .unwrap()
       .then(() => {
+        rememberMe && localStorage.setItem("username", username);
         props.history.push("/profile");
         window.location.reload();
       })
@@ -61,7 +62,7 @@ export default function Login(props) {
           <Form>
             <div className="input-wrapper">
               <label htmlFor="username">Username</label>
-              <Field name="username" type="text" id="username" />
+              <Field name="username" type="text" id="username" autoComplete="off" />
               <ErrorMessage name="username" component="div" />
             </div>
             <div className="input-wrapper">
@@ -70,7 +71,7 @@ export default function Login(props) {
               <ErrorMessage name="password" component="div" />
             </div>
             <div className="input-remember">
-              <input type="checkbox" id="remember-me" />
+              <Field name="rememberMe" type="checkbox" id="remember-me"/>
               <label htmlFor="remember-me">Remember me</label>
             </div>
             <button type="submit" className="sign-in-button" disabled={loading}>Sign In</button>
