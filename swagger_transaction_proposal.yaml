@@ -112,20 +112,27 @@ paths:
           description: Invalid Fields
         '500':
           description: Internal Server Error
-  /transaction/currentMonth:
-    post:
+  /transactions/monthly/{monthNumber}:
+    get:
       security:
         - Bearer: []
       tags:
-        - Transaction Module
-      summary: Retrieve all transactions for the current month
-      description: Retrieve all the transactions for the current month for the logged in user (known through JWT)
+        - Transactions
+      summary: List transactions of a given month
+      description: Get all the transactions of a given month for the logged in user (known through JWT)
       parameters:
         - in: header
           type: string
           name: Authorization
           description: Attach Bearer JWT token
           required: true
+        - in: path
+          name: monthNumber
+          required: true
+          type: number
+          minimum: 1
+          maximum: 12
+          description: Month number (between 1 and 12)
       produces:
         - application/json
       responses:
@@ -139,14 +146,14 @@ paths:
           description: Invalid Fields
         '500':
           description: Internal Server Error
-  /transaction/{transactionId}:
-    post:
+  /transactions/{transactionId}:
+    get:
       security:
         - Bearer: []
       tags:
-        - Transaction Module
-      summary: Retrieve the additional details of a particular transaction
-      description: Retrieve the additional details of a particular transaction of the logged in user (known through JWT) 
+        - Transactions
+      summary: Get a transaction
+      description: Get the details of a particular transaction of the logged in user (known through JWT) 
       parameters:
         - in: header
           type: string
@@ -165,7 +172,7 @@ paths:
         '200':
           description: Successful operation
           schema:
-            $ref: '#/definitions/TransactionAdditionalDetails'
+            $ref: '#/definitions/Transaction'
         '400':
           description: Invalid Fields
         '500':
@@ -174,9 +181,9 @@ paths:
       security:
         - Bearer: []
       tags:
-        - Transaction Module
-      summary: Edit the additional details of a particular transaction
-      description: Edit the additional details of a particular transaction of the logged in user (known through JWT) 
+        - Transactions
+      summary: Update details of a transaction
+      description: Update the user-editable details of a particular transaction of the logged in user (known through JWT) 
       parameters:
         - in: header
           type: string
@@ -194,14 +201,14 @@ paths:
           description: Update a transaction's additional details
           required: true
           schema:
-            $ref: '#/definitions/TransactionAdditionalDetails'
+            $ref: '#/definitions/TransactionEditableDetails'
       produces:
         - application/json
       responses:
         '200':
-          description: Success - Transaction additional details with updated values
+          description: Success - Detailed representation of the transaction with updated values
           schema:
-            $ref: '#/definitions/TransactionAdditionalDetails'
+            $ref: '#/definitions/Transaction'
         '400':
           description: Invalid Fields
         '500':
@@ -243,11 +250,17 @@ definitions:
         type: number
         format: double
         description: account balance after transaction
-  TransactionAdditionalDetails:
-    properties:
       type:
         type: string
         description: transaction type
+      category:
+        type: string
+        description: transaction category
+      notes:
+        type: string
+        description: user-written notes about the transaction
+  TransactionEditableDetails:
+    properties:
       category:
         type: string
         description: transaction category
