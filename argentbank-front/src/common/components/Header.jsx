@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { useState } from "react";
 import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -7,19 +8,27 @@ import { logout } from "../../slices/auth";
 import logo from "../../static/img/argentBankLogo.png";
 
 export default function Header() {
-  const { user: currentUser } = useSelector((state) => state.auth);
-  const dispatch = useDispatch();
+  const { isLoggedIn } = useSelector((state) => state.auth);
 
-  const loggedIn = currentUser ? true : false
+  // skip is used to prevent calling usePostUserProfileQuery when the user is not logged in
+  const [skip, setSkip] = useState(true);
 
   useEffect(() => {
-    console.log(currentUser)
-    console.log(loggedIn)
-  })
+    setSkip(true);
+    if (isLoggedIn) {
+      setSkip(false);
+    }
+  }, [isLoggedIn]);
 
-  const { data, error, isLoading } = usePostUserProfileQuery(undefined, {skip: loggedIn!== true});
+  const {
+    data: userData,
+    error,
+    isLoading,
+  } = usePostUserProfileQuery(undefined, { skip: skip });
 
+  const dispatch = useDispatch();
   const logOut = useCallback(() => {
+    setSkip(true);
     dispatch(logout());
     dispatch(argentBankApi.util.resetApiState());
   }, [dispatch]);
@@ -36,11 +45,11 @@ export default function Header() {
           <h1 className="sr-only">Argent Bank</h1>
         </Link>
 
-        {currentUser ? (
+        {isLoggedIn ? (
           <div className="navbar-nav ml-auto">
             <Link to={"/profile"} className="main-nav-item nav-link">
               <i className="fa fa-user-circle header-icon"></i>
-              {data ? data.body.firstName : "Profile"}
+              {userData ? userData.body.firstName : "Profile"}
             </Link>
             <Link to="/" className="main-nav-item nav-link" onClick={logOut}>
               <i className="fa fa-sign-out header-icon"></i>

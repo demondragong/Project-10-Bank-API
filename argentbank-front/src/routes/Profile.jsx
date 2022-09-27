@@ -2,17 +2,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 import NameEditForm from "../features/nameEditor/NameEditForm";
 import { usePostUserProfileQuery } from "../slices/api";
-import { show, toggle } from "../features/nameEditor/nameEditor";
+import { toggle } from "../features/nameEditor/nameEditor";
 
 export default function Profile() {
-  const { user: currentUser } = useSelector((state) => state.auth);
+  const { isLoggedIn } = useSelector((state) => state.auth);
   
-  const { data, error, isLoading } = usePostUserProfileQuery();
+  const { data: userData, error, isLoading } = usePostUserProfileQuery(undefined, { skip: !isLoggedIn });
 
   const nameEditorIsVisible = useSelector((state) => state.nameEditor.visible);
   const dispatch = useDispatch();
 
-  if (!currentUser) {
+  if (!isLoggedIn) {
     return <Navigate to="/login" />;
   }
 
@@ -29,7 +29,7 @@ export default function Profile() {
             <h1>
               Welcome back
               <br />
-              {data ? data.body.firstName + " " + data.body.lastName : ""}
+              {userData ? userData.body.firstName + " " + userData.body.lastName : ""}
             </h1>
             <button className="edit-button" onClick={() => dispatch(toggle())}>
               Edit Name

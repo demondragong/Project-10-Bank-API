@@ -207,6 +207,10 @@ body {
   font-size: 1.2rem;
 }
 
+.alert-danger {
+  margin-top: 1rem;
+}
+
 .form-fields {
   display: flex;
   justify-content: center;

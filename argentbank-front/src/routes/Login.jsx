@@ -7,7 +7,6 @@ import { clearMessage } from "../slices/message";
 import { login } from "../slices/auth";
 
 export default function Login(props) {
-
   const [loading, setLoading] = useState(false);
 
   const { isLoggedIn } = useSelector((state) => state.auth);
@@ -20,7 +19,7 @@ export default function Login(props) {
   }, [dispatch]);
 
   const initialValues = {
-    username: localStorage.getItem("username") ,
+    username: localStorage.getItem("username"),
     password: "",
   };
 
@@ -62,7 +61,12 @@ export default function Login(props) {
           <Form>
             <div className="input-wrapper">
               <label htmlFor="username">Username</label>
-              <Field name="username" type="text" id="username" autoComplete="off" />
+              <Field
+                name="username"
+                type="text"
+                id="username"
+                autoComplete="off"
+              />
               <ErrorMessage name="username" component="div" />
             </div>
             <div className="input-wrapper">
@@ -71,20 +75,22 @@ export default function Login(props) {
               <ErrorMessage name="password" component="div" />
             </div>
             <div className="input-remember">
-              <Field name="rememberMe" type="checkbox" id="remember-me"/>
+              <Field name="rememberMe" type="checkbox" id="remember-me" />
               <label htmlFor="remember-me">Remember me</label>
             </div>
-            <button type="submit" className="sign-in-button" disabled={loading}>Sign In</button>
+            <button type="submit" className="sign-in-button" disabled={loading}>
+              Sign In
+            </button>
+            {message && (
+              <div className="form-group">
+                <div className="alert alert-danger" role="alert">
+                  {message}
+                </div>
+              </div>
+            )}
           </Form>
         </Formik>
       </section>
-      {message && (
-        <div className="form-group">
-          <div className="alert alert-danger" role="alert">
-            {message}
-          </div>
-        </div>
-      )}
     </main>
   );
 }
