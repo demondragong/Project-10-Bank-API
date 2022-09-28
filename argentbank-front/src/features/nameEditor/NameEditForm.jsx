@@ -1,5 +1,5 @@
 import { Formik, Field, Form, ErrorMessage } from "formik";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useEditUserNamesMutation, usePostUserProfileQuery } from "../../slices/api";
 import { hide } from "./nameEditor";
 
@@ -32,12 +32,12 @@ export default function NameEditForm() {
           <div className="form-fields">
             <div className="input-wrapper">
               <label htmlFor="firstname"></label>
-              <Field name="firstname" type="text" id="username" />
+              <Field name="firstname" type="text" id="username" autoComplete="off" />
               <ErrorMessage name="firstname" component="div" />
             </div>
             <div className="input-wrapper">
               <label htmlFor="lastname"></label>
-              <Field name="lastname" type="text" id="lastname"/>
+              <Field name="lastname" type="text" id="lastname" autoComplete="off" />
               <ErrorMessage name="lastname" component="div" />
             </div>
           </div>

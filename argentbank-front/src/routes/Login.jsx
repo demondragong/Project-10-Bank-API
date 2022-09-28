@@ -19,7 +19,7 @@ export default function Login(props) {
   }, [dispatch]);
 
   const initialValues = {
-    username: localStorage.getItem("username"),
+    username: localStorage.getItem("username") || "",
     password: "",
   };
 
