@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 import NameEditForm from "../features/nameEditor/NameEditForm";
-import { usePostUserProfileQuery } from "../slices/api";
+import { usePostUserProfileQuery } from "../services/api";
 import { toggle } from "../features/nameEditor/nameEditor";
 
 export default function Profile() {

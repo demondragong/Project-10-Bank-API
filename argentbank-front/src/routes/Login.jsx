@@ -1,22 +1,14 @@
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { clearMessage } from "../slices/message";
-import { login } from "../slices/auth";
+import { setCredentials } from "../services/authSlice";
+import { useLoginMutation } from "../services/api";
 
 export default function Login(props) {
-  const [loading, setLoading] = useState(false);
-
   const { isLoggedIn } = useSelector((state) => state.auth);
-  const { message } = useSelector((state) => state.message);
 
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(clearMessage());
-  }, [dispatch]);
 
   const initialValues = {
     username: localStorage.getItem("username") || "",
@@ -28,20 +20,20 @@ export default function Login(props) {
     password: Yup.string().required("This field is required."),
   });
 
-  const handleLogin = (formValue) => {
-    const { username, password, rememberMe } = formValue;
-    setLoading(true);
+  const [login, { isLoading }] = useLoginMutation()
 
-    dispatch(login({ username, password, rememberMe }))
-      .unwrap()
-      .then(() => {
-        rememberMe && localStorage.setItem("username", username);
-        props.history.push("/profile");
-        window.location.reload();
-      })
-      .catch(() => {
-        setLoading(false);
-      });
+  const handleLogin = async (formValue) => {
+    try {
+      const { username, password, rememberMe } = formValue;
+      const user = await login({username, password}).unwrap()
+      dispatch(setCredentials(user))
+      localStorage.setItem("token", JSON.stringify(user.body.token));
+      rememberMe && localStorage.setItem("username", username);
+      props.history.push("/profile");
+      window.location.reload();
+    } catch(err) {
+      console.log(err)
+    }
   };
 
   if (isLoggedIn) {
@@ -78,16 +70,16 @@ export default function Login(props) {
               <Field name="rememberMe" type="checkbox" id="remember-me" />
               <label htmlFor="remember-me">Remember me</label>
             </div>
-            <button type="submit" className="sign-in-button" disabled={loading}>
+            <button type="submit" className="sign-in-button" disabled={isLoading}>
               Sign In
             </button>
-            {message && (
+            {/* {message && (
               <div className="form-group">
                 <div className="alert alert-danger" role="alert">
                   {message}
                 </div>
               </div>
-            )}
+            )} */}
           </Form>
         </Formik>
       </section>

@@ -7,15 +7,22 @@ export const argentBankApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: apiBaseUrl,
     prepareHeaders: (headers) => {
-      const user = JSON.parse(localStorage.getItem("user"));
-      if (user && user.token) {
-        headers.set("authorization", `Bearer ${user.token}`);
+      const token = JSON.parse(localStorage.getItem("token"));
+      if (token) {
+        headers.set("authorization", `Bearer ${token}`);
       }
       return headers;
     },
   }),
   tagTypes: ['user names'],
   endpoints: (builder) => ({
+    login: builder.mutation({
+      query: ({username: email, password}) => ({
+        url: "/user/login",
+        method: "POST",
+        body: {email, password}
+      }),
+    }),
     postUserProfile: builder.query({
       query: () => ({
         url: "/user/profile",
@@ -37,6 +44,7 @@ export const argentBankApi = createApi({
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
 export const { 
+  useLoginMutation,
   usePostUserProfileQuery,
   useEditUserNamesMutation
 } = argentBankApi;

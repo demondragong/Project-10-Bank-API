@@ -3,8 +3,8 @@ import { useState } from "react";
 import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { argentBankApi, usePostUserProfileQuery } from "../../slices/api";
-import { logout } from "../../slices/auth";
+import { argentBankApi, usePostUserProfileQuery } from "../../services/api";
+import { logout } from "../../services/authSlice";
 import logo from "../../static/img/argentBankLogo.png";
 
 export default function Header() {
@@ -29,9 +29,12 @@ export default function Header() {
   const dispatch = useDispatch();
   const logOut = useCallback(() => {
     setSkip(true);
+    localStorage.removeItem("token");
     dispatch(logout());
     dispatch(argentBankApi.util.resetApiState());
   }, [dispatch]);
+
+
 
   return (
     <header>

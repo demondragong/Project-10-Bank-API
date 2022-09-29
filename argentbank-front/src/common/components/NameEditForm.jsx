@@ -1,13 +1,13 @@
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import { useDispatch } from "react-redux";
-import { useEditUserNamesMutation, usePostUserProfileQuery } from "../../slices/api";
-import { hide } from "./nameEditor";
+import { useEditUserNamesMutation, usePostUserProfileQuery } from "../../services/api";
+import { hide } from "../../features/nameEditor/nameEditor";
 
 export default function NameEditForm() {
   
   const dispatch = useDispatch();
 
-  const { data, error } = usePostUserProfileQuery()
+  const { data } = usePostUserProfileQuery()
 
   const [editUserNames, { isLoading }] = useEditUserNamesMutation()
 
