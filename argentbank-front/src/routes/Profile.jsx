@@ -1,8 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
-import NameEditForm from "../features/nameEditor/NameEditForm";
+import NameEditForm from "../common/components/NameEditForm";
 import { usePostUserProfileQuery } from "../services/api";
-import { toggle } from "../features/nameEditor/nameEditor";
+import { toggle } from "../store/nameEditorSlice";
 
 export default function Profile() {
   const { isLoggedIn } = useSelector((state) => state.auth);

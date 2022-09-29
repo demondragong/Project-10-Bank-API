@@ -2,7 +2,7 @@ import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { Navigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { setCredentials } from "../services/authSlice";
+import { setCredentials } from "../store/authSlice";
 import { useLoginMutation } from "../services/api";
 
 export default function Login(props) {

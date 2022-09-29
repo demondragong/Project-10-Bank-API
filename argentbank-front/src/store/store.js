@@ -1,7 +1,8 @@
 import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
-import authReducer from "../services/authSlice";
+import authReducer from "./authSlice";
+import nameEditorReducer from "./nameEditorSlice";
 import { argentBankApi } from "../services/api";
-import nameEditorReducer from "../features/nameEditor/nameEditor";
+
 
 
 const store = configureStore({

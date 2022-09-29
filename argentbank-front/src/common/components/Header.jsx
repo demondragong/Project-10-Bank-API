@@ -4,7 +4,7 @@ import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { argentBankApi, usePostUserProfileQuery } from "../../services/api";
-import { logout } from "../../services/authSlice";
+import { logout } from "../../store/authSlice";
 import logo from "../../static/img/argentBankLogo.png";
 
 export default function Header() {
